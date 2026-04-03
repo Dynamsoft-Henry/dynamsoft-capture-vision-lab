@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<FrameLayout
+		android:id="@+id/guide_frame_container"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/rounded_white_border">
+
+		<ImageView
+			android:id="@+id/guide_frame_text"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|center_horizontal"
+			android:layout_margin="8dp"
+			android:adjustViewBounds="true"
+			android:background="#1A000000"
+			android:fontFamily="monospace"
+			android:padding="2dp"
+			android:scaleType="fitCenter"
+			android:src="@drawable/ic_guide_frame_text" />
+	</FrameLayout>
+</FrameLayout>

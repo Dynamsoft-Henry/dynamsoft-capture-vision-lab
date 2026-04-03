@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/main"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".MrzResultActivity">
+
+	<TextView
+		android:id="@+id/no_result_view"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:gravity="center"
+		android:textColor="@color/white"
+		android:textSize="16sp"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="No result" />
+
+	<ScrollView
+		android:id="@+id/result_view"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:padding="16dp">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="100dp"
+				android:orientation="horizontal">
+
+				<LinearLayout
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:layout_weight="4"
+					android:gravity="center_vertical"
+					android:orientation="vertical"
+					android:paddingVertical="8dp">
+
+					<TextView
+						android:id="@+id/tv_full_name"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:letterSpacing="-0.01"
+						android:textColor="@color/white"
+						android:textSize="24sp"
+						android:textStyle="bold"
+						tools:text="Full Name" />
+
+					<TextView
+						android:id="@+id/tv_gender_and_age"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textSize="14sp"
+						tools:text="Gender, XX years old" />
+
+					<TextView
+						android:id="@+id/tv_expiry"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingTop="4dp"
+						android:textSize="14sp"
+						tools:text="Expiry: XX XXX XXXX" />
+				</LinearLayout>
+
+				<View
+					android:layout_width="8dp"
+					android:layout_height="match_parent" />
+
+				<ImageView
+					android:id="@+id/iv_portrait"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:layout_weight="1.2"
+					android:background="#7FFFFFFF"
+					android:src="@drawable/ic_portrait_placeholder" />
+			</LinearLayout>
+
+			<androidx.viewpager2.widget.ViewPager2
+				android:id="@+id/vp_images"
+				android:layout_width="match_parent"
+				android:layout_height="162dp"
+				android:layout_marginTop="24dp"
+				android:overScrollMode="never" />
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="24dp"
+				android:text="Personal Info"
+				android:textColor="@color/white"
+				android:textStyle="bold" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Given Name" />
+
+				<TextView
+					android:id="@+id/tv_given_name"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Surname" />
+
+				<TextView
+					android:id="@+id/tv_surname"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Date of Birth" />
+
+				<TextView
+					android:id="@+id/tv_date_of_birth"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Gender" />
+
+				<TextView
+					android:id="@+id/tv_gender"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Nationality" />
+
+				<TextView
+					android:id="@+id/tv_nationality"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="24dp"
+				android:text="Document Info"
+				android:textColor="@color/white"
+				android:textStyle="bold" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Doc. Type" />
+
+				<TextView
+					android:id="@+id/tv_doc_type"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Doc. Number" />
+
+				<TextView
+					android:id="@+id/tv_doc_number"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:paddingTop="8dp">
+
+				<TextView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Expiry Date" />
+
+				<TextView
+					android:id="@+id/tv_expiry_date"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textColor="@color/white"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="24dp"
+				android:text="Raw MRZ Text"
+				android:textColor="@color/white"
+				android:textStyle="bold" />
+
+			<TextView
+				android:id="@+id/tv_raw_mrz"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="monospace"
+				android:paddingBottom="16dp"
+				android:paddingTop="8dp"
+				android:textColor="@color/white" />
+		</LinearLayout>
+	</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
