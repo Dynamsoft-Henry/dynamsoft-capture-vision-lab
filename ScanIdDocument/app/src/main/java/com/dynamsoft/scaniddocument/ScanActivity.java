@@ -220,8 +220,8 @@ public class ScanActivity extends AppCompatActivity {
 				new CrossVerificationCriteria(5, 2));
 		mRouter.addResultFilter(filter);
 		try {
-//			mRouter.initSettingsFromFile("id-scan.json");
-            mRouter.initSettingsFromFile("original.json");
+			mRouter.initSettingsFromFile("id-scan.json");
+//            mRouter.initSettingsFromFile("original.json");
 			mRouter.setInput(mCamera);
 			mRouter.getIntermediateResultManager().addResultReceiver(mScanResultCollector);
 		} catch (CaptureVisionRouterException e) {
@@ -242,6 +242,7 @@ public class ScanActivity extends AppCompatActivity {
 
 			@Override
 			public void onCapturedResultReceived(@NonNull CapturedResult result) {
+                result.getDecodedBarcodesResult();
 				if (succeed) {
 					return;
 				}
@@ -375,7 +376,7 @@ public class ScanActivity extends AppCompatActivity {
 		succeed = true;
 		ScanUiAnimator.sequence()
 				.then(next -> ScanUiAnimator.showGuideTextZoneAnimate(mGuideFrameView, true, next::run))
-				.then(next -> ScanUiAnimator.showTip(mTipView, 22, RESULT_ANIMATION_DELAY_MS, next::run))
+				.then(next -> ScanUiAnimator.showTipText(mTipView, R.string.tip2_2_drivers_license, RESULT_ANIMATION_DELAY_MS, next::run))
 				.then(() -> openDriversLicenseResultPage(labelMap))
 				.start();
 	}

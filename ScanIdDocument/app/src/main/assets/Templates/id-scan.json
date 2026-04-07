@@ -20,6 +20,7 @@
       "Name": "roi-id-document",
       "TaskSettingNameArray": [
         "task-passport-and-id",
+        "task-pdf-417",
         "task-detect-and-normalize-document"
       ]
     }

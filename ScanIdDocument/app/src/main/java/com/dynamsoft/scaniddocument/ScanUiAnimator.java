@@ -106,6 +106,28 @@ final class ScanUiAnimator {
 		});
 	}
 
+	static void showTipText(ViewGroup parent, int textResId, long delayAfterAnimationEnd, @Nullable AnimationListener listener) {
+		runOnMainThread(() -> {
+			TransitionSet set = new TransitionSet()
+					.addTransition(new ChangeBounds())
+					.addListener(new SimpleTransitionListener() {
+						@Override
+						void onAnimationEnd() {
+							if (listener == null) {
+								return;
+							}
+							runOnMainThreadDelayed(delayAfterAnimationEnd, listener::onAnimationEnd);
+						}
+					})
+					.setDuration(DEFAULT_ANIMATION_DURATION_MS);
+			TransitionManager.beginDelayedTransition(parent, set);
+
+			TextView tip1 = parent.findViewById(R.id.tv_tip1);
+			tip1.setVisibility(View.VISIBLE);
+			setTipText(tip1, textResId);
+		});
+	}
+
 	private static void setTipText(TextView textView, int resId) {
 		String rawText = textView.getContext().getString(resId);
 		Spanned spanned = HtmlCompat.fromHtml(rawText, HtmlCompat.FROM_HTML_MODE_LEGACY);
