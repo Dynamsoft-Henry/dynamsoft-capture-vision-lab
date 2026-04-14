@@ -1,0 +1,412 @@
+{
+  "GlobalParameter": {
+    "IntraOpNumThreads": 2
+  },
+  "CaptureVisionTemplates": [
+    {
+      "Name": "ReadDeliveryPaper",
+      "ImageROIProcessingNameArray": [
+        "roi-read-delivery"
+      ],
+      "Timeout": 5000,
+      "MaxParallelTasks": 0
+    },
+    {
+      "Name": "ReadBarcodes_Default",
+      "ImageROIProcessingNameArray": [
+        "roi-read-barcodes"
+      ],
+      "Timeout": 500,
+      "MaxParallelTasks": 0
+    },
+    {
+      "Name": "RecognizeTextLines_Default",
+      "ImageROIProcessingNameArray": [
+        "roi-recognize-number-letter"
+      ],
+      "MaxParallelTasks": 0
+    },
+    {
+      "Name": "DetectDocumentBoundaries_Default",
+      "ImageROIProcessingNameArray": [
+        "roi-detect-and-normalize-document"
+      ],
+      "MaxParallelTasks": 0
+    }
+  ],
+  "TargetROIDefOptions": [
+    {
+      "Name": "roi-read-delivery",
+      "TaskSettingNameArray": [
+        "task-read-barcodes",
+        "task-detect-and-normalize-document",
+        "task-recognize-number-letter"
+      ]
+    },
+    {
+      "Name": "roi-read-barcodes",
+      "TaskSettingNameArray": [
+        "task-read-barcodes"
+      ]
+    },
+    {
+      "Name": "roi-detect-and-normalize-document",
+      "TaskSettingNameArray": [
+        "task-detect-and-normalize-document"
+      ]
+    },
+    {
+      "Name": "roi-recognize-number-letter",
+      "TaskSettingNameArray": [
+        "task-recognize-number-letter"
+      ]
+    }
+  ],
+  "BarcodeFormatSpecificationOptions": [
+    {
+      "Name": "bfs1",
+      "BarcodeFormatIds": [
+        "BF_PDF417",
+        "BF_QR_CODE",
+        "BF_DATAMATRIX",
+        "BF_AZTEC",
+        "BF_MICRO_QR",
+        "BF_MICRO_PDF417",
+        "BF_DOTCODE"
+      ],
+      "MirrorMode": "MM_BOTH"
+    },
+    {
+      "Name": "bfs2",
+      "BarcodeFormatIds": [
+        "BF_ALL"
+      ],
+      "MirrorMode": "MM_NORMAL"
+    }
+  ],
+  "BarcodeReaderTaskSettingOptions": [
+    {
+      "Name": "task-read-barcodes",
+      "ExpectedBarcodesCount": 0,
+      "MaxThreadsInOneTask": 1,
+      "BarcodeFormatSpecificationNameArray": [
+        "bfs1",
+        "bfs2"
+      ],
+      "SectionArray": [
+        {
+          "Section": "ST_BARCODE_LOCALIZATION",
+          "ImageParameterName": "ip-read-barcodes",
+          "StageArray": [
+            {
+              "Stage": "SST_LOCALIZE_CANDIDATE_BARCODES",
+              "LocalizationModes": [
+                {
+                  "Mode": "LM_CONNECTED_BLOCKS",
+                  "ModelNameArray": ["OneDLocalization", "DataMatrixQRCodeLocalization"]
+                },
+                {
+                  "Mode": "LM_LINES",
+                  "ModelNameArray": ["OneDLocalization", "DataMatrixQRCodeLocalization"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Section": "ST_BARCODE_DECODING",
+          "ImageParameterName": "ip-read-barcodes",
+          "StageArray": [
+            {
+              "Stage": "SST_DECODE_BARCODES",
+              "DeblurModes": [
+                {
+                  "Mode": "DM_DIRECT_BINARIZATION"
+                },
+                {
+                  "Mode": "DM_NEURAL_NETWORK",
+                  "ModelNameArray": ["EAN13Decoder", "Code128Decoder", "Code39ITFDecoder"]
+                },
+                {
+                  "Mode": "DM_DEEP_ANALYSIS"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "TextLineSpecificationOptions": [
+    {
+      "Name": "tls-number-letter",
+      "CharacterModelName": "NumberLetterCharRecognition",
+      "OutputResults": 1
+    },
+    {
+      "Name": "tls-base",
+      "CharacterModelName": "MRZCharRecognition",
+      "TextLineRecModelName": "MRZTextLineRecognition",
+      "CharHeightRange": [
+        5,
+        1000,
+        1
+      ],
+      "BinarizationModes": [
+        {
+          "BlockSizeX": 41,
+          "BlockSizeY": 41,
+          "Mode": "BM_LOCAL_BLOCK",
+          "EnableFillBinaryVacancy": 0,
+          "ThresholdCompensation": 10
+        }
+      ],
+      "ConfusableCharactersCorrection": {
+        "ConfusableCharacters": [
+          [
+            "0",
+            "O"
+          ],
+          [
+            "1",
+            "I"
+          ],
+          [
+            "5",
+            "S"
+          ]
+        ],
+        "FontNameArray": [
+          "OCR_B"
+        ]
+      }
+    }
+  ],
+  "LabelRecognizerTaskSettingOptions": [
+    {
+      "Name": "task-recognize-number-letter",
+      "MaxThreadsInOneTask": 1,
+      "TextLineSpecificationNameArray": [
+        "tls-number-letter"
+      ],
+      "SectionArray": [
+        {
+          "Section": "ST_TEXT_LINE_LOCALIZATION",
+          "ImageParameterName": "ip-recognize-number-letter"
+        },
+        {
+          "Section": "ST_TEXT_LINE_RECOGNITION",
+          "ImageParameterName": "ip-recognize-number-letter"
+        }
+      ]
+    }
+  ],
+  "DocumentNormalizerTaskSettingOptions": [
+    {
+      "Name": "task-detect-and-normalize-document",
+      "MaxThreadsInOneTask": 1,
+      "SectionArray": [
+        {
+          "Section": "ST_DOCUMENT_DETECTION",
+          "ImageParameterName": "ip-detect-and-normalize"
+        },
+        {
+          "Section": "ST_DOCUMENT_DESKEWING",
+          "ImageParameterName": "ip-detect-and-normalize"
+        },
+        {
+          "Section": "ST_IMAGE_ENHANCEMENT",
+          "ImageParameterName": "ip-detect-and-normalize"
+        }
+      ]
+    },
+    {
+      "Name": "task-detect-document-boundaries",
+      "MaxThreadsInOneTask": 1,
+      "SectionArray": [
+        {
+          "Section": "ST_DOCUMENT_DETECTION",
+          "ImageParameterName": "ip-detect"
+        }
+      ]
+    },
+    {
+      "Name": "task-normalize-document",
+      "MaxThreadsInOneTask": 1,
+      "SectionArray": [
+        {
+          "Section": "ST_DOCUMENT_DESKEWING",
+          "ImageParameterName": "ip-normalize"
+        },
+        {
+          "Section": "ST_IMAGE_ENHANCEMENT",
+          "ImageParameterName": "ip-normalize"
+        }
+      ]
+    }
+  ],
+  "ImageParameterOptions": [
+    {
+      "Name": "ip-read-barcodes",
+      "BaseImageParameterName": "ip-read-single-barcode"
+    },
+    {
+      "Name": "ip-read-single-barcode",
+      "ApplicableStages": [
+        {
+          "Stage": "SST_REMOVE_TEXT_ZONES_FROM_BINARY",
+          "IfEraseTextZone": 1
+        },
+        {
+          "Stage": "SST_BINARIZE_IMAGE",
+          "BinarizationModes": [
+            {
+              "Mode": "BM_LOCAL_BLOCK",
+              "BlockSizeX": 39,
+              "BlockSizeY": 39,
+              "EnableFillBinaryVacancy": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "ip-recognize-number-letter",
+      "ApplicableStages": [
+        {
+          "Stage": "SST_DETECT_TEXT_ZONES",
+          "TextDetectionMode": {
+            "Mode": "TTDM_LINE",
+            "Direction": "HORIZONTAL",
+            "CharHeightRange": [
+              20,
+              1000,
+              1
+            ],
+            "Sensitivity": 7
+          }
+        }
+      ]
+    },
+    {
+      "Name": "ip-detect-and-normalize",
+      "ApplicableStages": [
+        {
+          "Stage": "SST_DETECT_TEXT_ZONES",
+          "TextDetectionMode": {
+            "Mode": "TTDM_WORD",
+            "Direction": "HORIZONTAL",
+            "Sensitivity": 7
+          }
+        },
+        {
+          "Stage": "SST_BINARIZE_IMAGE",
+          "BinarizationModes": [
+            {
+              "Mode": "BM_LOCAL_BLOCK",
+              "BlockSizeX": 25,
+              "BlockSizeY": 25,
+              "EnableFillBinaryVacancy": 0,
+              "ThresholdCompensation": 5
+            }
+          ]
+        },
+        {
+          "Stage": "SST_CONVERT_TO_GRAYSCALE",
+          "ColourConversionModes": [
+            {
+              "Mode": "CICM_GENERAL"
+            },
+            {
+              "Mode": "CICM_EDGE_ENHANCEMENT"
+            },
+            {
+              "Mode": "CICM_HSV",
+              "ReferChannel": "H_CHANNEL"
+            }
+          ]
+        },
+        {
+          "Stage": "SST_DETECT_TEXTURE",
+          "TextureDetectionModes": [
+            {
+              "Mode": "TDM_GENERAL_WIDTH_CONCENTRATION",
+              "Sensitivity": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "ip-detect",
+      "ApplicableStages": [
+        {
+          "Stage": "SST_DETECT_TEXT_ZONES",
+          "TextDetectionMode": {
+            "Mode": "TTDM_WORD",
+            "Direction": "HORIZONTAL",
+            "Sensitivity": 7
+          }
+        },
+        {
+          "Stage": "SST_BINARIZE_IMAGE",
+          "BinarizationModes": [
+            {
+              "Mode": "BM_LOCAL_BLOCK",
+              "BlockSizeX": 25,
+              "BlockSizeY": 25,
+              "EnableFillBinaryVacancy": 0,
+              "ThresholdCompensation": 5
+            }
+          ]
+        },
+        {
+          "Stage": "SST_CONVERT_TO_GRAYSCALE",
+          "ColourConversionModes": [
+            {
+              "Mode": "CICM_GENERAL"
+            },
+            {
+              "Mode": "CICM_EDGE_ENHANCEMENT"
+            },
+            {
+              "Mode": "CICM_HSV",
+              "ReferChannel": "H_CHANNEL"
+            }
+          ]
+        },
+        {
+          "Stage": "SST_DETECT_TEXTURE",
+          "TextureDetectionModes": [
+            {
+              "Mode": "TDM_GENERAL_WIDTH_CONCENTRATION",
+              "Sensitivity": 8
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "CaptureVisionModelOptions": [
+    {
+      "Name": "NumberCharRecognition",
+      "MaxModelInstances": 4
+    },
+    {
+      "Name": "LetterCharRecognition",
+      "MaxModelInstances": 4
+    },
+    {
+      "Name": "UppercaseCharRecognition",
+      "MaxModelInstances": 4
+    },
+    {
+      "Name": "NumberUppercaseCharRecognition",
+      "MaxModelInstances": 4
+    },
+    {
+      "Name": "NumberLetterCharRecognition",
+      "MaxModelInstances": 4
+    }
+  ]
+}

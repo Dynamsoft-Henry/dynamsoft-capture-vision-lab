@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ScanBrandLabel</string>
+    <string name="error_dialog_title">License Verification Failed</string>
+    <string name="result_title">Results:</string>
+    <string name="start_scanning">Start Scanning</string>
+    <string name="barcode_reader">Capture Vision</string>
+    <string name="powered_by_dynamsoft">Powered by Dynamsoft</string>
+    <string name="app_description">Scan S/C codes, P/N, label text, barcodes, and archive the label image.</string>
+    <string name="export_results">Export results</string>
+    <string name="result_page_title">Scan Result</string>
+    <string name="result_image_title">Deskewed Image</string>
+    <string name="result_barcode_title">Barcode Results</string>
+    <string name="result_text_line_title">Text Line Results</string>
+    <string name="result_scan_again">Scan Again</string>
+    <string name="result_no_barcode">No barcode result.</string>
+    <string name="result_no_text_line">No text line result.</string>
+    <string name="result_barcode_item_format">Barcode %1$d: %2$s</string>
+    <string name="result_text_line_item_format">Text line %1$d: %2$s</string>
+</resources>
