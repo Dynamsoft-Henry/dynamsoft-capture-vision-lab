@@ -6,31 +6,11 @@
     {
       "Name": "ReadDeliveryPaper",
       "ImageROIProcessingNameArray": [
-        "roi-read-delivery"
+        "roi-read-delivery",
+        "roi-detect-label-image",
+        "roi-recognize-lot-number"
       ],
       "Timeout": 5000,
-      "MaxParallelTasks": 0
-    },
-    {
-      "Name": "ReadBarcodes_Default",
-      "ImageROIProcessingNameArray": [
-        "roi-read-barcodes"
-      ],
-      "Timeout": 500,
-      "MaxParallelTasks": 0
-    },
-    {
-      "Name": "RecognizeTextLines_Default",
-      "ImageROIProcessingNameArray": [
-        "roi-recognize-number-letter"
-      ],
-      "MaxParallelTasks": 0
-    },
-    {
-      "Name": "DetectDocumentBoundaries_Default",
-      "ImageROIProcessingNameArray": [
-        "roi-detect-and-normalize-document"
-      ],
       "MaxParallelTasks": 0
     }
   ],
@@ -39,27 +19,32 @@
       "Name": "roi-read-delivery",
       "TaskSettingNameArray": [
         "task-read-barcodes",
-        "task-detect-and-normalize-document",
         "task-recognize-number-letter"
       ]
     },
     {
-      "Name": "roi-read-barcodes",
-      "TaskSettingNameArray": [
-        "task-read-barcodes"
-      ]
-    },
-    {
-      "Name": "roi-detect-and-normalize-document",
+      "Name": "roi-detect-label-image",
       "TaskSettingNameArray": [
         "task-detect-and-normalize-document"
       ]
     },
     {
-      "Name": "roi-recognize-number-letter",
+      "Name": "roi-recognize-lot-number",
       "TaskSettingNameArray": [
         "task-recognize-number-letter"
-      ]
+      ],
+      "Location": {
+        "ReferenceObjectFilter": {
+          "ReferenceTargetROIDefNameArray": [ "roi-detect-label-image" ]
+        },
+        "Offset": {
+          "MeasuredByPercentage": 1,
+          "FirstPoint": [ 10, 15 ],
+          "SecondPoint": [ 40, 15 ],
+          "ThirdPoint": [ 40, 37 ],
+          "FourthPoint": [ 10, 37 ]
+        }
+      }
     }
   ],
   "BarcodeFormatSpecificationOptions": [
@@ -406,7 +391,12 @@
     },
     {
       "Name": "NumberLetterCharRecognition",
-      "MaxModelInstances": 4
+      "MaxModelInstances": 4,
+      "ModelArgs": {
+        "CharSet": {
+          "AddSpecialChars": ["-",":"]
+        }
+      }
     }
   ]
 }

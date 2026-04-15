@@ -2,9 +2,6 @@ package com.dynamsoft.dbr.scanbrandlabel;
 
 import com.dynamsoft.core.basic_structures.ImageData;
 
-import java.util.ArrayList;
-import java.util.List;
-
 final class ResultPayloadStore {
 
     private static Payload payload;
@@ -12,8 +9,14 @@ final class ResultPayloadStore {
     private ResultPayloadStore() {
     }
 
-    static synchronized void store(ImageData deskewedImage, List<String> barcodeTexts, List<String> textLineContents) {
-        payload = new Payload(deskewedImage, new ArrayList<>(barcodeTexts), new ArrayList<>(textLineContents));
+    static synchronized void store(
+            ImageData labelImage,
+            String traceabilityCode,
+            String serialNumber,
+            String partNumber,
+            String lotCode
+    ) {
+        payload = new Payload(labelImage, traceabilityCode, serialNumber, partNumber, lotCode);
     }
 
     static synchronized Payload get() {
@@ -25,26 +28,44 @@ final class ResultPayloadStore {
     }
 
     static final class Payload {
-        private final ImageData deskewedImage;
-        private final ArrayList<String> barcodeTexts;
-        private final ArrayList<String> textLineContents;
+        private final ImageData labelImage;
+        private final String traceabilityCode;
+        private final String serialNumber;
+        private final String partNumber;
+        private final String lotCode;
 
-        Payload(ImageData deskewedImage, ArrayList<String> barcodeTexts, ArrayList<String> textLineContents) {
-            this.deskewedImage = deskewedImage;
-            this.barcodeTexts = barcodeTexts;
-            this.textLineContents = textLineContents;
+        Payload(
+                ImageData labelImage,
+                String traceabilityCode,
+                String serialNumber,
+                String partNumber,
+                String lotCode
+        ) {
+            this.labelImage = labelImage;
+            this.traceabilityCode = traceabilityCode;
+            this.serialNumber = serialNumber;
+            this.partNumber = partNumber;
+            this.lotCode = lotCode;
         }
 
-        ImageData getDeskewedImage() {
-            return deskewedImage;
+        ImageData getLabelImage() {
+            return labelImage;
         }
 
-        ArrayList<String> getBarcodeTexts() {
-            return new ArrayList<>(barcodeTexts);
+        String getTraceabilityCode() {
+            return traceabilityCode;
         }
 
-        ArrayList<String> getTextLineContents() {
-            return new ArrayList<>(textLineContents);
+        String getSerialNumber() {
+            return serialNumber;
+        }
+
+        String getPartNumber() {
+            return partNumber;
+        }
+
+        String getLotCode() {
+            return lotCode;
         }
     }
 }

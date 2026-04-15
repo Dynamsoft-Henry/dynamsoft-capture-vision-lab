@@ -2,6 +2,9 @@ package com.dynamsoft.dbr.scanbrandlabel;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dynamsoft.core.basic_structures.CoreException;
 
-import java.util.List;
-
 public class ResultActivity extends AppCompatActivity {
+
+    private static final String TRACEABILITY_LABEL = "Traceability Code";
+    private static final String SERIAL_NUMBER_LABEL = "Serial Number (S/N)";
+    private static final String PART_NUMBER_LABEL = "Part Number (P/N)";
+    private static final String LOT_CODE_LABEL = "Lot Code";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,18 +31,16 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         ImageView resultImageView = findViewById(R.id.iv_result_image);
-        TextView barcodeResultView = findViewById(R.id.tv_barcode_results);
-        TextView textLineResultView = findViewById(R.id.tv_text_line_results);
+        TextView resultDetailsView = findViewById(R.id.tv_result_details);
 
         try {
-            Bitmap resultBitmap = payload.getDeskewedImage().toBitmap();
+            Bitmap resultBitmap = payload.getLabelImage().toBitmap();
             resultImageView.setImageBitmap(resultBitmap);
         } catch (CoreException exception) {
             resultImageView.setImageDrawable(null);
         }
 
-        barcodeResultView.setText(formatLines(getString(R.string.result_barcode_item_format), payload.getBarcodeTexts(), R.string.result_no_barcode));
-        textLineResultView.setText(formatLines(getString(R.string.result_text_line_item_format), payload.getTextLineContents(), R.string.result_no_text_line));
+        resultDetailsView.setText(buildResultDetails(payload));
 
         findViewById(R.id.btn_scan_again).setOnClickListener(v -> finish());
     }
@@ -49,18 +53,26 @@ public class ResultActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private String formatLines(String itemFormat, List<String> values, int emptyTextResId) {
-        if (values == null || values.isEmpty()) {
-            return getString(emptyTextResId);
+    private CharSequence buildResultDetails(ResultPayloadStore.Payload payload) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        appendResultLine(builder, TRACEABILITY_LABEL, payload.getTraceabilityCode());
+        appendResultLine(builder, SERIAL_NUMBER_LABEL, payload.getSerialNumber());
+        appendResultLine(builder, PART_NUMBER_LABEL, payload.getPartNumber());
+        appendResultLine(builder, LOT_CODE_LABEL, payload.getLotCode());
+
+        return builder;
+    }
+
+    private void appendResultLine(SpannableStringBuilder builder, String label, String value) {
+        if (builder.length() > 0) {
+            builder.append("\n\n");
         }
 
-        StringBuilder builder = new StringBuilder();
-        for (int index = 0; index < values.size(); index++) {
-            if (index > 0) {
-                builder.append("\n");
-            }
-            builder.append(String.format(itemFormat, index + 1, values.get(index)));
-        }
-        return builder.toString();
+        int start = builder.length();
+        builder.append(label);
+        builder.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(": ");
+        builder.append(value);
     }
 }

@@ -9,11 +9,5 @@
     <string name="export_results">Export results</string>
     <string name="result_page_title">Scan Result</string>
     <string name="result_image_title">Deskewed Image</string>
-    <string name="result_barcode_title">Barcode Results</string>
-    <string name="result_text_line_title">Text Line Results</string>
     <string name="result_scan_again">Scan Again</string>
-    <string name="result_no_barcode">No barcode result.</string>
-    <string name="result_no_text_line">No text line result.</string>
-    <string name="result_barcode_item_format">Barcode %1$d: %2$s</string>
-    <string name="result_text_line_item_format">Text line %1$d: %2$s</string>
 </resources>
